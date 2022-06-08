@@ -10,15 +10,21 @@ pipeline {
           steps {
             echo 'hello phase de test'
             sh 'mvn clean test'
+            sh 'touch bonjour'
           }
         }
 
         stage('build') {
           steps {
             sh 'ls'
-            git(url: 'https://github.com/MartineBaba/java_test.git', branch: 'master')
+            sh 'mkdir sparkjava'
+            git(url: 'https://github.com/kliakos/sparkjava-war-example.git', branch: 'master')
             sh 'mvn clean install'
             archiveArtifacts 'target/*.war'
+            dir(path: 'sparjava/') {
+              pwd()
+            }
+
           }
         }
 
