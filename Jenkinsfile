@@ -9,12 +9,15 @@ pipeline {
         echo 'hello phase de test'
         sh 'mvn clean test'
         sh 'touch bonjour'
+        junit 'target/surefire-reports/*.xml'
+        cleanWs(cleanWhenSuccess: true)
       }
     }
 
-    stage('reports') {
+    stage('build') {
       steps {
-        junit 'target/surefire-reports/*.xml'
+        git(url: 'https://github.com/kliakos/sparkjava-war-example.git', branch: 'master')
+        sh 'mvn clean install'
       }
     }
 
